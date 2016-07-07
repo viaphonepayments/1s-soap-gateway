@@ -1,0 +1,97 @@
+<definitions xmlns="http://schemas.xmlsoap.org/wsdl/" xmlns:soap12bind="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:soapbind="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://viaphone.us/soap" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsd1="http://viaphone.us/soap" name="WebService1" targetNamespace="http://viaphone.us/soap">
+    <types>
+        <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xs1="http://viaphone.us/soap" targetNamespace="http://viaphone.us/soap" attributeFormDefault="unqualified" elementFormDefault="qualified">
+            <xs:complexType name="Purchase">
+                <xs:sequence>
+                    <xs:element name="id" type="xs:long" minOccurs="0"/>
+                    <xs:element name="branchName" type="xs:string" minOccurs="0"/>
+                    <xs:element name="storeName" type="xs:string" minOccurs="0"/>
+                    <xs:element name="amount" type="xs:float" minOccurs="0"/>
+                    <xs:element name="discount" type="xs:float" minOccurs="0"/>
+                    <xs:element name="secret" type="xs:string" minOccurs="0"/>
+                    <xs:element name="created" type="xs:string" minOccurs="0"/>
+                    <xs:element name="completed" type="xs:string" minOccurs="0"/>
+                    <xs:element name="products" type="tns:PurchaseItem" maxOccurs="unbounded"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="PurchaseItem">
+                <xs:sequence>
+                    <xs:element name="barCode" type="xs:string" minOccurs="0"/>
+                    <xs:element name="name" type="xs:string" minOccurs="0"/>
+                    <xs:element name="category" type="xs:string" minOccurs="0"/>
+                    <xs:element name="brand" type="xs:string" minOccurs="0"/>
+                    <xs:element name="qty" type="xs:int" minOccurs="0"/>
+                    <xs:element name="price" type="xs:float" minOccurs="0"/>
+                    <xs:element name="discount" type="xs:float" minOccurs="0"/>
+                    <xs:element name="type" type="xs:string" minOccurs="0"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="lookupResponse">
+                <xs:sequence>
+                    <xs:element name="purchase" type="tns:Purchase"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:element name="lookupRequest">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="purchaseId" type="xs:string"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="lookupRequestResponse">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="return" type="tns:lookupResponse"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:schema>
+    </types>
+    <message name="lookupRequestRequestMessage">
+        <part name="parameters" element="tns:lookupRequest"/>
+    </message>
+    <message name="lookupRequestResponseMessage">
+        <part name="parameters" element="tns:lookupRequestResponse"/>
+    </message>
+    <portType name="WebService1PortType">
+        <operation name="lookupRequest">
+            <input message="tns:lookupRequestRequestMessage"/>
+            <output message="tns:lookupRequestResponseMessage"/>
+        </operation>
+    </portType>
+    <binding name="WebService1SoapBinding" type="tns:WebService1PortType">
+        <soapbind:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+        <operation name="lookupRequest">
+            <soapbind:operation style="document" soapAction="http://viaphone.us/soap#WebService1:lookupRequest"/>
+            <input>
+                <soapbind:body use="literal"/>
+            </input>
+            <output>
+                <soapbind:body use="literal"/>
+            </output>
+        </operation>
+    </binding>
+    <binding name="WebService1Soap12Binding" type="tns:WebService1PortType">
+        <soap12bind:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+        <operation name="lookupRequest">
+            <soap12bind:operation style="document" soapAction="http://viaphone.us/soap#WebService1:lookupRequest"/>
+            <input>
+                <soap12bind:body use="literal"/>
+            </input>
+            <output>
+                <soap12bind:body use="literal"/>
+            </output>
+        </operation>
+    </binding>
+    <service name="WebService1">
+        <port name="WebService1Soap" binding="tns:WebService1SoapBinding">
+            <documentation>
+                <wsi:Claim xmlns:wsi="http://ws-i.org/schemas/conformanceClaim/" conformsTo="http://ws-i.org/profiles/basic/1.1"/>
+            </documentation>
+            <soapbind:address location="http://localhost/wb2/ws/WebService1"/>
+        </port>
+        <port name="WebService1Soap12" binding="tns:WebService1Soap12Binding">
+            <soap12bind:address location="http://localhost/wb2/ws/WebService1"/>
+        </port>
+    </service>
+</definitions>
