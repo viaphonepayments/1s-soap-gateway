@@ -21,12 +21,12 @@ public class SOAPClient {
             QName bodyName = new QName("http://viaphone.us/soap", "lookupRequest", XMLConstants.DEFAULT_NS_PREFIX);
             SOAPBodyElement bodyElement = sb.addBodyElement(bodyName);
             SOAPElement soapBodyElem1 = bodyElement.addChildElement("purchaseId");
-            soapBodyElem1.addTextNode("1");
+            soapBodyElem1.addTextNode("41");
             System.out.println("\n Soap Request:\n");
             sm.writeTo(System.out);
             System.out.println();
 
-            URL endpoint = new URL("http://1s-soap-gateway.us-west-2.elasticbeanstalk.com/soap/");
+            URL endpoint = new URL("http://localhost:8082/soap/");
             SOAPMessage response = connection.call(sm, endpoint);
             printSOAPResponse(response);
             System.out.println(response.getContentDescription());

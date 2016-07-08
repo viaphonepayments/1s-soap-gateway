@@ -19,9 +19,8 @@ import javax.xml.bind.annotation.XmlType;
  *       &lt;sequence>
  *         &lt;element name="purchaseId" type="{http://www.w3.org/2001/XMLSchema}long"/>
  *         &lt;element name="purchaseStatus" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *         &lt;element name="token" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *         &lt;element name="confirmType" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *         &lt;element name="qr" type="{http://www.w3.org/2001/XMLSchema}string"/>
+ *         &lt;element name="token" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+ *         &lt;element name="qr" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *       &lt;/sequence>
  *     &lt;/restriction>
  *   &lt;/complexContent>
@@ -35,7 +34,6 @@ import javax.xml.bind.annotation.XmlType;
     "purchaseId",
     "purchaseStatus",
     "token",
-    "confirmType",
     "qr"
 })
 public class CreatePurchaseResponse {
@@ -44,11 +42,9 @@ public class CreatePurchaseResponse {
     protected long purchaseId;
     @XmlElement(namespace = "http://viaphone.us/soap", required = true)
     protected String purchaseStatus;
-    @XmlElement(namespace = "http://viaphone.us/soap", required = true)
+    @XmlElement(namespace = "http://viaphone.us/soap")
     protected String token;
-    @XmlElement(namespace = "http://viaphone.us/soap", required = true)
-    protected String confirmType;
-    @XmlElement(namespace = "http://viaphone.us/soap", required = true)
+    @XmlElement(namespace = "http://viaphone.us/soap")
     protected String qr;
 
     /**
@@ -113,30 +109,6 @@ public class CreatePurchaseResponse {
      */
     public void setToken(String value) {
         this.token = value;
-    }
-
-    /**
-     * Gets the value of the confirmType property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public String getConfirmType() {
-        return confirmType;
-    }
-
-    /**
-     * Sets the value of the confirmType property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setConfirmType(String value) {
-        this.confirmType = value;
     }
 
     /**

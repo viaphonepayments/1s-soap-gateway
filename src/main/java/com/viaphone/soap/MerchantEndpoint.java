@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Endpoint
 public class MerchantEndpoint {
@@ -31,11 +32,13 @@ public class MerchantEndpoint {
     @ResponsePayload
     public CreatePurchaseRequestResponse createPurchaseRequest(@RequestPayload CreatePurchaseRequest req) throws IOException {
         CreatePurchaseRequestResponse resp = new CreatePurchaseRequestResponse();
-        List<ProductItem> productItems = convertProductItems(req.getProductItems());
-        if (productItems == null) {
+        if (req.getProductItems() == null || req.getProductItems().getProducts().isEmpty()) {
             log.error("Got createPurchaseRequest with empty products");
             return resp;
         }
+
+        List<ProductItem> productItems =
+                req.getProductItems().getProducts().stream().map(this::convert).collect(Collectors.toList());
 
         log.info("Got createPurchaseRequest: " + productItems);
         CreateResp apiResp = merchantSdk.createPurchase(productItems);
@@ -44,7 +47,7 @@ public class MerchantEndpoint {
         response.setPurchaseId(apiResp.getPurchaseId());
         response.setPurchaseStatus(apiResp.getPurchaseStatus().name());
         response.setToken(apiResp.getToken());
-        response.setQr(apiResp.getQr());
+//        response.setQr(apiResp.getQr());
         resp.setReturn(response);
         return resp;
     }
@@ -84,42 +87,32 @@ public class MerchantEndpoint {
         p.setDiscount(purchase.getDiscount().floatValue());
         p.setCreated(dateFormat.format(purchase.getCreated()));
         p.setCompleted(dateFormat.format(purchase.getCompleted()));
-        fillPurchaseItem(p, purchase.getProducts());
+        p.getProducts().addAll(purchase.getProducts().stream().map(this::convert).collect(Collectors.toList()));
         return p;
     }
 
-    private void fillPurchaseItem(Purchase purchase, List<ProductItem> productItems) {
-        List<PurchaseItem> items = purchase.getProducts();
-        productItems.forEach(pi -> {
-            PurchaseItem item = new PurchaseItem();
-            item.setBarCode(pi.getBarCode());
-            item.setName(pi.getName());
-            item.setCategory(pi.getCategory());
-            item.setBrand(pi.getBrand());
-            item.setQty(pi.getQty());
-            item.setPrice(pi.getPrice().floatValue());
-            item.setDiscount(pi.getDiscount().floatValue());
-            item.setType(pi.getType());
-            items.add(item);
-        });
+    private PurchaseItem convert(ProductItem pi) {
+        PurchaseItem item = new PurchaseItem();
+        item.setBarCode(pi.getBarCode());
+        item.setName(pi.getName());
+        item.setCategory(pi.getCategory());
+        item.setBrand(pi.getBrand());
+        item.setQty(pi.getQty());
+        item.setPrice(pi.getPrice().floatValue());
+        item.setDiscount(pi.getDiscount().floatValue());
+        item.setType(pi.getType());
+        return item;
     }
 
-    private List<ProductItem> convertProductItems(PurchaseItems purchaseItems) {
-        if (purchaseItems != null && !purchaseItems.getProducts().isEmpty()) {
-            List<ProductItem> items = new ArrayList<>();
-            purchaseItems.getProducts().forEach(pi -> {
-                ProductItem item = new ProductItem();
-                item.setBarCode(pi.getBarCode());
-                item.setName(pi.getName());
-                item.setCategory(pi.getCategory());
-                item.setBrand(pi.getBrand());
-                item.setType(pi.getType());
-                item.setQty(pi.getQty());
-                item.setPrice(pi.getPrice().doubleValue());
-                items.add(item);
-            });
-            return items;
-        }
-        return null;
+    private ProductItem convert(PurchaseItem pi) {
+        ProductItem item = new ProductItem();
+        item.setBarCode(pi.getBarCode());
+        item.setName(pi.getName());
+        item.setCategory(pi.getCategory());
+        item.setBrand(pi.getBrand());
+        item.setType(pi.getType());
+        item.setQty(pi.getQty());
+        item.setPrice(pi.getPrice().doubleValue());
+        return item;
     }
 }
