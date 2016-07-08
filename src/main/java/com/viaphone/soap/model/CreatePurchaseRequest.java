@@ -18,7 +18,7 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;sequence>
- *         &lt;element name="purchaseId" type="{http://www.w3.org/2001/XMLSchema}long"/>
+ *         &lt;element name="productItems" type="{http://viaphone.us/soap}PurchaseItems"/>
  *       &lt;/sequence>
  *     &lt;/restriction>
  *   &lt;/complexContent>
@@ -29,28 +29,36 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
-    "purchaseId"
+    "productItems"
 })
-@XmlRootElement(name = "lookupRequest", namespace = "http://viaphone.us/soap")
-public class LookupRequest {
+@XmlRootElement(name = "createPurchaseRequest", namespace = "http://viaphone.us/soap")
+public class CreatePurchaseRequest {
 
-    @XmlElement(namespace = "http://viaphone.us/soap")
-    protected long purchaseId;
+    @XmlElement(namespace = "http://viaphone.us/soap", required = true)
+    protected PurchaseItems productItems;
 
     /**
-     * Gets the value of the purchaseId property.
+     * Gets the value of the productItems property.
      * 
+     * @return
+     *     possible object is
+     *     {@link PurchaseItems }
+     *     
      */
-    public long getPurchaseId() {
-        return purchaseId;
+    public PurchaseItems getProductItems() {
+        return productItems;
     }
 
     /**
-     * Sets the value of the purchaseId property.
+     * Sets the value of the productItems property.
      * 
+     * @param value
+     *     allowed object is
+     *     {@link PurchaseItems }
+     *     
      */
-    public void setPurchaseId(long value) {
-        this.purchaseId = value;
+    public void setProductItems(PurchaseItems value) {
+        this.productItems = value;
     }
 
 }

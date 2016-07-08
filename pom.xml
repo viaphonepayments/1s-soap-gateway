@@ -30,7 +30,7 @@
         <dependency>
             <groupId>com.viaphone.sdk</groupId>
             <artifactId>viaphone.sdk</artifactId>
-            <version>0.1.0b</version>
+            <version>0.1.1b</version>
         </dependency>
     </dependencies>
 

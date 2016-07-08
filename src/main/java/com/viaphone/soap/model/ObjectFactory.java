@@ -30,6 +30,38 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link PurchaseStatusRequestResponse }
+     * 
+     */
+    public PurchaseStatusRequestResponse createPurchaseStatusRequestResponse() {
+        return new PurchaseStatusRequestResponse();
+    }
+
+    /**
+     * Create an instance of {@link PurchaseStatusResponse }
+     * 
+     */
+    public PurchaseStatusResponse createPurchaseStatusResponse() {
+        return new PurchaseStatusResponse();
+    }
+
+    /**
+     * Create an instance of {@link CreatePurchaseRequestResponse }
+     * 
+     */
+    public CreatePurchaseRequestResponse createCreatePurchaseRequestResponse() {
+        return new CreatePurchaseRequestResponse();
+    }
+
+    /**
+     * Create an instance of {@link CreatePurchaseResponse }
+     * 
+     */
+    public CreatePurchaseResponse createCreatePurchaseResponse() {
+        return new CreatePurchaseResponse();
+    }
+
+    /**
      * Create an instance of {@link LookupRequestResponse }
      * 
      */
@@ -46,11 +78,35 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link CreatePurchaseRequest }
+     * 
+     */
+    public CreatePurchaseRequest createCreatePurchaseRequest() {
+        return new CreatePurchaseRequest();
+    }
+
+    /**
+     * Create an instance of {@link PurchaseItems }
+     * 
+     */
+    public PurchaseItems createPurchaseItems() {
+        return new PurchaseItems();
+    }
+
+    /**
      * Create an instance of {@link LookupRequest }
      * 
      */
     public LookupRequest createLookupRequest() {
         return new LookupRequest();
+    }
+
+    /**
+     * Create an instance of {@link PurchaseStatusRequest }
+     * 
+     */
+    public PurchaseStatusRequest createPurchaseStatusRequest() {
+        return new PurchaseStatusRequest();
     }
 
     /**

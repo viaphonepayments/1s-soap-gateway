@@ -5,14 +5,14 @@ import javax.xml.transform.*;
 import javax.xml.transform.stream.*;
 import java.net.URL;
 
-public class SOAPClientSAAJ {
+public class SOAPClient {
 
     public static void main(String args[]) {
         try {
             SOAPConnectionFactory sfc = SOAPConnectionFactory.newInstance();
             SOAPConnection connection = sfc.createConnection();
 
-            MessageFactory mf = MessageFactory.newInstance();
+            MessageFactory mf = MessageFactory.newInstance(SOAPConstants.SOAP_1_2_PROTOCOL);
             SOAPMessage sm = mf.createMessage();
 
             SOAPHeader sh = sm.getSOAPHeader();
@@ -20,13 +20,13 @@ public class SOAPClientSAAJ {
             sh.detachNode();
             QName bodyName = new QName("http://viaphone.us/soap", "lookupRequest", XMLConstants.DEFAULT_NS_PREFIX);
             SOAPBodyElement bodyElement = sb.addBodyElement(bodyName);
-            bodyElement.addAttribute(new QName("purchaseId"), "1");
-
+            SOAPElement soapBodyElem1 = bodyElement.addChildElement("purchaseId");
+            soapBodyElem1.addTextNode("1");
             System.out.println("\n Soap Request:\n");
             sm.writeTo(System.out);
             System.out.println();
 
-            URL endpoint = new URL("http://192.168.10.69:8082/soap/");
+            URL endpoint = new URL("http://1s-soap-gateway.us-west-2.elasticbeanstalk.com/soap/");
             SOAPMessage response = connection.call(sm, endpoint);
             printSOAPResponse(response);
             System.out.println(response.getContentDescription());

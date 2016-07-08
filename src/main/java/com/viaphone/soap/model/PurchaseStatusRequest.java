@@ -31,8 +31,8 @@ import javax.xml.bind.annotation.XmlType;
 @XmlType(name = "", propOrder = {
     "purchaseId"
 })
-@XmlRootElement(name = "lookupRequest", namespace = "http://viaphone.us/soap")
-public class LookupRequest {
+@XmlRootElement(name = "purchaseStatusRequest", namespace = "http://viaphone.us/soap")
+public class PurchaseStatusRequest {
 
     @XmlElement(namespace = "http://viaphone.us/soap")
     protected long purchaseId;

@@ -1,6 +1,15 @@
 <definitions xmlns="http://schemas.xmlsoap.org/wsdl/" xmlns:soap12bind="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:soapbind="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://viaphone.us/soap" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsd1="http://viaphone.us/soap" name="WebService1" targetNamespace="http://viaphone.us/soap">
     <types>
         <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xs1="http://viaphone.us/soap" targetNamespace="http://viaphone.us/soap" attributeFormDefault="unqualified" elementFormDefault="qualified">
+            <xs:complexType name="CreatePurchaseResponse">
+                <xs:sequence>
+                    <xs:element name="purchaseId" type="xs:long"/>
+                    <xs:element name="purchaseStatus" type="xs:string"/>
+                    <xs:element name="token" type="xs:string"/>
+                    <xs:element name="confirmType" type="xs:string"/>
+                    <xs:element name="qr" type="xs:string"/>
+                </xs:sequence>
+            </xs:complexType>
             <xs:complexType name="Purchase">
                 <xs:sequence>
                     <xs:element name="id" type="xs:long" minOccurs="0"/>
@@ -26,6 +35,17 @@
                     <xs:element name="type" type="xs:string" minOccurs="0"/>
                 </xs:sequence>
             </xs:complexType>
+            <xs:complexType name="PurchaseItems">
+                <xs:sequence>
+                    <xs:element name="products" type="tns:PurchaseItem" minOccurs="0" maxOccurs="unbounded"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="PurchaseStatusResponse">
+                <xs:sequence>
+                    <xs:element name="purchaseStatus" type="xs:string"/>
+                    <xs:element name="purchaseId" type="xs:long"/>
+                </xs:sequence>
+            </xs:complexType>
             <xs:complexType name="lookupResponse">
                 <xs:sequence>
                     <xs:element name="purchase" type="tns:Purchase"/>
@@ -34,7 +54,7 @@
             <xs:element name="lookupRequest">
                 <xs:complexType>
                     <xs:sequence>
-                        <xs:element name="purchaseId" type="xs:string"/>
+                        <xs:element name="purchaseId" type="xs:long"/>
                     </xs:sequence>
                 </xs:complexType>
             </xs:element>
@@ -42,6 +62,34 @@
                 <xs:complexType>
                     <xs:sequence>
                         <xs:element name="return" type="tns:lookupResponse"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="purchaseStatusRequest">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="purchaseId" type="xs:long"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="purchaseStatusRequestResponse">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="return" type="tns:PurchaseStatusResponse"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="createPurchaseRequest">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="productItems" type="tns:PurchaseItems"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="createPurchaseRequestResponse">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="return" type="tns:CreatePurchaseResponse"/>
                     </xs:sequence>
                 </xs:complexType>
             </xs:element>
@@ -53,16 +101,54 @@
     <message name="lookupRequestResponseMessage">
         <part name="parameters" element="tns:lookupRequestResponse"/>
     </message>
+    <message name="purchaseStatusRequestRequestMessage">
+        <part name="parameters" element="tns:purchaseStatusRequest"/>
+    </message>
+    <message name="purchaseStatusRequestResponseMessage">
+        <part name="parameters" element="tns:purchaseStatusRequestResponse"/>
+    </message>
+    <message name="createPurchaseRequestRequestMessage">
+        <part name="parameters" element="tns:createPurchaseRequest"/>
+    </message>
+    <message name="createPurchaseRequestResponseMessage">
+        <part name="parameters" element="tns:createPurchaseRequestResponse"/>
+    </message>
     <portType name="WebService1PortType">
         <operation name="lookupRequest">
             <input message="tns:lookupRequestRequestMessage"/>
             <output message="tns:lookupRequestResponseMessage"/>
+        </operation>
+        <operation name="purchaseStatusRequest">
+            <input message="tns:purchaseStatusRequestRequestMessage"/>
+            <output message="tns:purchaseStatusRequestResponseMessage"/>
+        </operation>
+        <operation name="createPurchaseRequest">
+            <input message="tns:createPurchaseRequestRequestMessage"/>
+            <output message="tns:createPurchaseRequestResponseMessage"/>
         </operation>
     </portType>
     <binding name="WebService1SoapBinding" type="tns:WebService1PortType">
         <soapbind:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
         <operation name="lookupRequest">
             <soapbind:operation style="document" soapAction="http://viaphone.us/soap#WebService1:lookupRequest"/>
+            <input>
+                <soapbind:body use="literal"/>
+            </input>
+            <output>
+                <soapbind:body use="literal"/>
+            </output>
+        </operation>
+        <operation name="purchaseStatusRequest">
+            <soapbind:operation style="document" soapAction="http://viaphone.us/soap#WebService1:purchaseStatusRequest"/>
+            <input>
+                <soapbind:body use="literal"/>
+            </input>
+            <output>
+                <soapbind:body use="literal"/>
+            </output>
+        </operation>
+        <operation name="createPurchaseRequest">
+            <soapbind:operation style="document" soapAction="http://viaphone.us/soap#WebService1:createPurchaseRequest"/>
             <input>
                 <soapbind:body use="literal"/>
             </input>
@@ -82,16 +168,34 @@
                 <soap12bind:body use="literal"/>
             </output>
         </operation>
+        <operation name="purchaseStatusRequest">
+            <soap12bind:operation style="document" soapAction="http://viaphone.us/soap#WebService1:purchaseStatusRequest"/>
+            <input>
+                <soap12bind:body use="literal"/>
+            </input>
+            <output>
+                <soap12bind:body use="literal"/>
+            </output>
+        </operation>
+        <operation name="createPurchaseRequest">
+            <soap12bind:operation style="document" soapAction="http://viaphone.us/soap#WebService1:createPurchaseRequest"/>
+            <input>
+                <soap12bind:body use="literal"/>
+            </input>
+            <output>
+                <soap12bind:body use="literal"/>
+            </output>
+        </operation>
     </binding>
     <service name="WebService1">
         <port name="WebService1Soap" binding="tns:WebService1SoapBinding">
             <documentation>
                 <wsi:Claim xmlns:wsi="http://ws-i.org/schemas/conformanceClaim/" conformsTo="http://ws-i.org/profiles/basic/1.1"/>
             </documentation>
-            <soapbind:address location="http://localhost/wb2/ws/WebService1"/>
+            <soapbind:address location="http://192.168.10.78/wb2/ws/WebService1"/>
         </port>
         <port name="WebService1Soap12" binding="tns:WebService1Soap12Binding">
-            <soap12bind:address location="http://localhost/wb2/ws/WebService1"/>
+            <soap12bind:address location="http://192.168.10.78/wb2/ws/WebService1"/>
         </port>
     </service>
 </definitions>
