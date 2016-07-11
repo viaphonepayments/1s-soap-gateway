@@ -1,6 +1,8 @@
 package com.viaphone.soap;
 
 import org.apache.log4j.Logger;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.actuate.system.ApplicationPidFileWriter;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 
@@ -17,12 +19,14 @@ public class Application {
     private static String APP_PROP = APP_HOME + File.separator + "app.properties";
 
     public static void main(String[] args) {
-        log.info("Starting application...");
         try {
+            log.info("Starting application...");
             Properties prop = new Properties();
             InputStream input = new FileInputStream(APP_PROP);
             prop.load(input);
-            new SpringApplicationBuilder().sources(Application.class).properties(prop).run(args);
+            SpringApplication app = new SpringApplicationBuilder().sources(Application.class).properties(prop).build();
+            app.addListeners(new ApplicationPidFileWriter("app.pid"));
+            app.run(args);
         } catch (Exception e) {
             e.printStackTrace();
             log.error(e.getMessage());
