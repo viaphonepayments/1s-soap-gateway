@@ -1,3 +1,3 @@
 #!/bin/sh
-PID=$(cat pid)
+PID=$(cat app.pid)
 kill -9 $PID

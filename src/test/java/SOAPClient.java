@@ -26,7 +26,7 @@ public class SOAPClient {
             sm.writeTo(System.out);
             System.out.println();
 
-            URL endpoint = new URL("http://localhost:8082/soap/");
+            URL endpoint = new URL("http://54.187.154.231:8082/soap/");
             SOAPMessage response = connection.call(sm, endpoint);
             printSOAPResponse(response);
             System.out.println(response.getContentDescription());
