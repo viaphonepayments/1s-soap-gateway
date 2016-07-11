@@ -8,4 +8,4 @@
  set CLASSPATH=%CLASSPATH%;VpSOAPService-0.0.1.jar
  echo !CLASSPATH!
 
-start "VpSOAPService" /B javaw com.viaphone.soap.Application start
+start "VpSOAPService" /B javaw com.viaphone.soap.Application
