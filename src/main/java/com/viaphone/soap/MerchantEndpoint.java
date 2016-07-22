@@ -2,6 +2,7 @@ package com.viaphone.soap;
 
 import com.viaphone.sdk.MerchantSdk;
 import com.viaphone.sdk.model.*;
+import com.viaphone.sdk.model.enums.ConfirmType;
 import com.viaphone.sdk.model.merchant.*;
 import com.viaphone.soap.model.*;
 import org.apache.log4j.Logger;
@@ -41,12 +42,12 @@ public class MerchantEndpoint {
                 req.getProductItems().getProducts().stream().map(this::convert).collect(Collectors.toList());
 
         log.info("Got createPurchaseRequest: " + productItems);
-        CreateResp apiResp = merchantSdk.createPurchase(productItems);
+        CreateResp apiResp = merchantSdk.createPurchase(productItems, ConfirmType.CHIRP);
         log.info("Sdk response: " + apiResp.toString());
         CreatePurchaseResponse response = new CreatePurchaseResponse();
         response.setPurchaseId(apiResp.getPurchaseId());
         response.setPurchaseStatus(apiResp.getPurchaseStatus().name());
-        response.setToken(apiResp.getToken());
+        response.setToken(apiResp.getConfirmCode());
 //        response.setQr(apiResp.getQr());
         resp.setReturn(response);
         return resp;
